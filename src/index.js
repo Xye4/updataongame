@@ -1,6 +1,8 @@
 var log = [];
 var points = [];
 var point = 0;
+var username = "";
+var userColor = getRandomColor();
 //console.log(log[0][0]);
 //console.log(points);
 
@@ -11,11 +13,19 @@ var grid = clickableGrid(12, 12, function(el, row, col, i, isDoubleClick) {
     el.className = "clicked1";
     log[row][col]=1;
     winning(row,col);
-
+    el.style.background = userColor;
   }
   console.log(log);
 });
 
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 
 function changeClassName(){
   var name = document.getElementsByClassName("clicked1");
@@ -144,85 +154,23 @@ function clickableGrid(rows, cols, callback) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function checkLine(log){
-  var counter = 0;
-  var point= 0;
-  if (log.length >= 5){
-    for (var i = 0; i <log.length; i++){
-      //console.log(log[i][0] + " first value");
-      for (var j = i+1; j < log.length; j++){
-        while (counter < 5) {
-          counter++;
-          //console.log(log[j][0] + "value second ");
-          if (Math.abs(log[i]- log[j]) === 12 || Math.abs(log[i] - log[j]) === 1) {
-            log.splice(i);
-            log.splice(j);
-            /*d = document.getElementsByClassName('clicked1');
-            d.className = "empty";*/
-            return true
-
-          }
-        }
-      }
-    }
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-checkLine(log);
-
 function setName() {
-  document.cookie = document.getElementById("name").value;
-  window.location.replace("http://localhost:63342/thethegame/src/index1.html");
+  document.cookie = document.getElementById("username").value;
+  window.location.replace("index1.html");
   getName()
 }
 
 function getName() {
-  var decodedCookie = decodeURIComponent(document.cookie);
+  let decodedCookie = decodeURIComponent(document.cookie);
+  username = decodedCookie;
   return decodedCookie
 }
 
 function displayName() {
   var name = document.getElementById("PlayerNamesDisplay");
-  name.innerHTML = getName()/* + " " + ":" + " " + points[0]*/;
+  name.innerHTML = getName();
 }
+
 
 function loadGrid() {
   document.body.appendChild(grid);
